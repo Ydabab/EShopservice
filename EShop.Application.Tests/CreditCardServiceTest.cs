@@ -3,64 +3,58 @@ using EShop.Appliication;
 namespace EShop.Application.Tests;
 public class CreditCardServiceTest
 {
-    [Fact]
-    public void ValidateCard_Correct_ReturnTrue()
+    [Theory]
+    [InlineData("3497 7965 8312 797")]
+    [InlineData("345-470-784-783-010")]
+    [InlineData("4532289052809181")]
+    public void ValidateCard_CorrectNumber_ReturnTrue(string cardNumber)
     {
         // Arrange
         var card = new CreditCardService();
-        string cardNumber = "12345678901234567";
         // Act
         var result = card.ValidateCard(cardNumber);
 
         // Assert
         Assert.True(result);
     }
-    [Fact]
-    public void ValidateCard_TooShort_ReturnFalse()
+    [Theory]
+    [InlineData("1234")]
+    [InlineData("123456789012345678901234567890")]
+    [InlineData("1234*&&ujd71947128&*())**@")]
+    public void ValidateCard_WrongNumber_ReturnFalse(string cardNumber)
     {
         // Arrange
         var card = new CreditCardService();
-        string cardNumber = "123456789";
         // Act
         var result = card.ValidateCard(cardNumber);
 
         // Assert
         Assert.False(result);
     }
-    [Fact]
-    public void ValidateCard_TooLong_ReturnFalse()
+    [Theory]
+    [InlineData ("American Express", "3497 7965 8312 797")]
+    [InlineData ("Visa", "4024-0071-6540-1778")]
+    [InlineData("MasterCard", "5530016454538418")]
+    public void GetCardType_CorrectCardType_ReturnTrue(string cardType, string cardNumber)
     {
         // Arrange
         var card = new CreditCardService();
-        string cardNumber = "1234567890123456789012345";
         // Act
-        var result = card.ValidateCard(cardNumber);
-
+        var result = card.GetCardType(cardNumber);
         // Assert
-        Assert.False(result);
+        Assert.Equal(cardType, result);
     }
-    [Fact]
-    public void ValidateCard_WithPauses_ReturnTrue()
+    [Theory]
+    [InlineData("American Express", "4024-0071-6540-1778")]
+    [InlineData("Visa", "5530016454538418")]
+    [InlineData("MasterCard", "3497 7965 8312 797")]
+    public void GetCardType_WrongCardType_ReturnFalse(string cardType, string cardNumber)
     {
         // Arrange
         var card = new CreditCardService();
-        string cardNumber = "1234-5678-9012-3456";
         // Act
-        var result = card.ValidateCard(cardNumber);
-
+        var result = card.GetCardType(cardNumber);
         // Assert
-        Assert.True(result);
-    }
-    [Fact]
-    public void ValidateCard_WithSpaces_ReturnTrue()
-    {
-        // Arrange
-        var card = new CreditCardService();
-        string cardNumber = "1234 5678 9012 3456";
-        // Act
-        var result = card.ValidateCard(cardNumber);
-
-        // Assert
-        Assert.True(result);
+        Assert.NotEqual(cardType, result);
     }
 }
