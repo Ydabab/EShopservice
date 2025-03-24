@@ -1,8 +1,10 @@
 using EShop.Appliication;
+using EShop.Domain.Exceptions.CardNumber;
 
 namespace EShop.Application.Tests;
 public class CreditCardServiceTest
 {
+    
     [Theory]
     [InlineData("3497 7965 8312 797")]
     [InlineData("345-470-784-783-010")]
@@ -19,18 +21,39 @@ public class CreditCardServiceTest
     }
     [Theory]
     [InlineData("1234")]
-    [InlineData("123456789012345678901234567890")]
-    [InlineData("1234*&&ujd71947128&*())**@")]
-    public void ValidateCard_WrongNumber_ReturnFalse(string cardNumber)
+    [InlineData("5352 3000")]
+
+    public void ValidateCard_TooShortNumber_ReturnNumberTooShortException(string cardNumber)
     {
         // Arrange
         var card = new CreditCardService();
         // Act
-        var result = card.ValidateCard(cardNumber);
-
         // Assert
-        Assert.False(result);
+        Assert.Throws<CardNumberTooShortException>(()=> card.ValidateCard(cardNumber));
     }
+    [Theory]
+    [InlineData("123456789012345678901234567890")]
+    [InlineData("3000 3000 3000 8200 8200 8200")]
+    public void ValidateCard_TooLongNumber_ReturnNumberTooLongException(string cardNumber)
+    {
+        // Arrange
+        var card = new CreditCardService();
+        // Act
+        // Assert
+        Assert.Throws<CardNumberTooLongException>(() => card.ValidateCard(cardNumber));
+    }
+    [Theory]
+    [InlineData("1234*&&ujd7194712")]
+    [InlineData("111133333*&&&&$*#")]
+    public void ValidateCard_InvalidNumber_ReturnNumberInvalidException(string cardNumber)
+    {
+        // Arrange
+        var card = new CreditCardService();
+        // Act
+        // Assert
+        Assert.Throws<CardNumberInvalidException>(()=> card.ValidateCard(cardNumber));
+    }
+
     [Theory]
     [InlineData ("American Express", "3497 7965 8312 797")]
     [InlineData ("Visa", "4024-0071-6540-1778")]

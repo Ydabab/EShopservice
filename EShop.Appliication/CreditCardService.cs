@@ -1,13 +1,15 @@
 ﻿using System.Text.RegularExpressions;
+using EShop.Domain.Exceptions.CardNumber;
 namespace EShop.Appliication;
-
 public class CreditCardService
 {
     public bool ValidateCard(string cardNumber)
     {
+        if (cardNumber.Length >= 20) { throw new CardNumberTooLongException(); }
+        if (cardNumber.Length <= 12) { throw new CardNumberTooShortException(); }
         cardNumber = cardNumber.Replace(" ", "").Replace("-", "");
         if (!cardNumber.All(char.IsDigit))
-            return false;
+            throw new CardNumberInvalidException();
 
         int sum = 0;
         bool alternate = false;
