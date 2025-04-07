@@ -1,4 +1,4 @@
-using EShop.Appliication;
+using EShop.Application;
 using EShop.Domain.Exceptions.CardNumber;
 
 namespace EShop.Application.Tests;

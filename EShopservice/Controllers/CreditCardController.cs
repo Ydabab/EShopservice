@@ -1,4 +1,4 @@
-﻿using EShop.Appliication;
+﻿using EShop.Application;
 using EShop.Domain.Enums;
 using EShop.Domain.Exceptions.CardNumber;
 using Microsoft.AspNetCore.Mvc;

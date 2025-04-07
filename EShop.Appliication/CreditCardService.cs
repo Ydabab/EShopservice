@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using EShop.Domain.Exceptions.CardNumber;
-namespace EShop.Appliication;
+namespace EShop.Application;
 public class CreditCardService
 {
     public bool ValidateCard(string cardNumber)

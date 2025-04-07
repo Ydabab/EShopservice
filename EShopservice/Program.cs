@@ -1,6 +1,16 @@
+using EShop.Domain.Repositories;
+using EShop.Domain.Seeders;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseInMemoryDatabase("TestDatabase"));
+
+builder.Services.AddScoped<IESeeder, EShopSeeder>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
